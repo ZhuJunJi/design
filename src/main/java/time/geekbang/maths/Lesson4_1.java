@@ -16,4 +16,60 @@ package time.geekbang.maths;
  * Created by J.zhu on 2019/5/27.
  */
 public class Lesson4_1 {
+
+    /**
+     * 递归调用，数学归纳法证明
+     * @param k- 当前格子数
+     * @param result- 当前格子麦粒数和麦子总数
+     * @return boolean- 当前格子是否成立
+     */
+    public static boolean prove(int k, Result result){
+        if(k == 1){
+            if((Math.pow(2,1)-1) == 1){
+                result.wheatNum = 1;
+                result.wheatTotalNum = 1;
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            // 证明前一步是否成立
+            boolean proveOfPreviousOne = prove(k-1,result);
+            if(proveOfPreviousOne){
+                result.wheatNum *= 2;
+                result.wheatTotalNum += result.wheatNum;
+                boolean proveOfCurrentOne = false;
+                if(result.wheatTotalNum == (Math.pow(2,k)-1)){
+                    proveOfCurrentOne = true;
+                }
+                return proveOfCurrentOne;
+            }else {
+                return false;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Result result = new Result();
+        int k = 63;
+        boolean prove = prove(k, result);
+        System.out.println(String.format("第 %d 格是否成立：%b\n" +
+                "当前格子麦子数： %d \n" +
+                "当前麦粒总数 %d",
+                k, prove,
+                result.wheatNum,
+                result.wheatTotalNum));
+    }
+
+}
+
+class Result {
+    /**
+     * 当前格子麦粒数量
+     */
+    public long wheatNum;
+    /**
+     * 麦粒总数
+     */
+    public long wheatTotalNum;
 }
